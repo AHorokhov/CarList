@@ -35,6 +35,8 @@ final class VehicleTableViewCell: UITableViewCell {
         interiorLabel.text = nil
     }
 
+    // MARK: Public
+
     func updateWithItem(item: Vehicle) {
         addressLabel.text = "Address: \(item.address ?? ""))"
         nameLabel.text = "Name: \(item.name ?? "" )"
