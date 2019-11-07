@@ -9,6 +9,8 @@
 import Foundation
 import MapKit
 
+// TODO: We can avoid struct `VehicleList`, did it as fast solution.
+
 struct VehicleList: Decodable {
 
     enum CodingKeys: String, CodingKey {
@@ -81,5 +83,4 @@ extension Vehicle {
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         return try decoder.decode(Vehicle.self, from: data)
     }
-
 }

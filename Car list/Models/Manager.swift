@@ -17,6 +17,8 @@ class Manager {
     static let shared = Manager()
     static let urlString = "https://wunder-test-case.s3-eu-west-1.amazonaws.com/ios/locations.json"
 
+    // TODO: here we can use protocol, instead of `shared` for manager.
+
     func getData() -> Observable<[Vehicle]?> {
         guard let url = URL(string: Manager.urlString) else { return .just([])}
         return SessionManager.default.rx.request(.get, url)
