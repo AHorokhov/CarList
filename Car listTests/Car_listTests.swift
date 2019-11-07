@@ -7,7 +7,26 @@
 //
 
 import XCTest
+import Foundation
 @testable import Car_list
+
+/// Helpers for tests
+class TestsHelper {
+
+    static var bundle: Bundle {
+        return Bundle(for: TestsHelper.self)
+    }
+
+    static func jsonURL(_ fileName: String) -> URL? {
+        return bundle.url(forResource: fileName, withExtension: "json")
+    }
+
+    static func encode(_ json: [String: Any]) -> Data {
+        // swiftlint:disable:next force_try
+        return try! JSONSerialization.data(withJSONObject: json, options: [])
+    }
+
+}
 
 class Car_listTests: XCTestCase {
 
@@ -29,6 +48,19 @@ class Car_listTests: XCTestCase {
         self.measure {
             // Put the code you want to measure the time of here.
         }
+    }
+
+    func testDecode() {
+        let data = TestsHelper.encode(["address":"Grosse Reichenstraße 7, 20457 Hamburg",
+                                       "coordinates": [9.99622, 53.54847, 0],
+                                       "engineType": "CE",
+                                       "exterior": "UNACCEPTABLE",
+                                       "fuel": 45,
+                                       "interior": "GOOD",
+                                       "name": "HH-GO8480",
+                                       "vin":"WME4513341K412697"])
+
+        XCTAssertNoThrow(try Vehicle.decode(data: data))
     }
 
 }

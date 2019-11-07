@@ -71,7 +71,15 @@ class Vehicle: NSObject, Decodable, MKAnnotation {
         interior = try? container.decode(String.self, forKey: .interior)
         name = try? container.decode(String.self, forKey: .name)
         vin = try? container.decode(String.self, forKey: .vin)
+    }
+}
 
+extension Vehicle {
+
+    static func decode(data: Data) throws -> Vehicle {
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        return try decoder.decode(Vehicle.self, from: data)
     }
 
 }
