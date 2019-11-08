@@ -10,22 +10,16 @@ import XCTest
 import Foundation
 @testable import Car_list
 
-/// Helpers for tests
 class TestsHelper {
 
-    static var bundle: Bundle {
-        return Bundle(for: TestsHelper.self)
-    }
-
-    static func jsonURL(_ fileName: String) -> URL? {
-        return bundle.url(forResource: fileName, withExtension: "json")
-    }
-
     static func encode(_ json: [String: Any]) -> Data {
-        // swiftlint:disable:next force_try
         return try! JSONSerialization.data(withJSONObject: json, options: [])
     }
 
+}
+
+public func XCTAssertNoThrow<T>(_ expression: @autoclosure () throws -> T, assignTo ref: inout T?, _ message: String = "", file: StaticString = #file, line: UInt = #line) {
+    XCTAssertNoThrow(ref = try expression(), message, file: file, line: line)
 }
 
 class Car_listTests: XCTestCase {
@@ -45,9 +39,9 @@ class Car_listTests: XCTestCase {
 
     func testPerformanceExample() {
         // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+//        self.measure {
+//            // Put the code you want to measure the time of here.
+//        }
     }
 
     func testDecode() {
@@ -60,7 +54,11 @@ class Car_listTests: XCTestCase {
                                        "name": "HH-GO8480",
                                        "vin":"WME4513341K412697"])
 
-        XCTAssertNoThrow(try Vehicle.decode(data: data))
+        var vehicle: Vehicle?
+        XCTAssertNoThrow(try Vehicle.decode(data: data), assignTo: &vehicle)
+
+        XCTAssertEqual(vehicle?.fuelAmount, 45)
+        XCTAssertEqual(vehicle?.exterior, "UNACCEPTABLE")
     }
 
 }
